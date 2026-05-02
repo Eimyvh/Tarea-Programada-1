@@ -20,3 +20,17 @@ def cargarArchivos (pArchivo, pSeparador, pTokensActuales):
             return pTokensActuales, reemplazados       
     except FileNotFoundError: #En caso de que no exista el archivo.
         return None
+    
+import csv 
+def generarCSV(conteo):
+    archivo=open("reporteRemplazo.csv", "escribir",newline="",encoding="utf-8")#El utf es para guardar simbolos como la "Ñ,ñ" y tildes
+    escribir=csv.writer(archivo)
+    escribir.writerow(["Palabra Original", "Token", "Cantidad"])
+    for palabra in conteo:
+        token=conteo [palabra]["Token"]
+        cantidad=conteo[palabra]["Cantidad"]
+        escribir.writerow([palabra,token,cantidad])
+    archivo.close()
+    tokens=[("def","[funcion]"), ("return", "[return]"), ("suma", "[variable]")]
+
+     
