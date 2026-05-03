@@ -52,4 +52,12 @@ def validarArchivo(pArchivo, pSeparador):
     except FileNotFoundError: #Si el archivo no existe.
         return False,"El archivo no existe."
 
+def mostrarTokens (pTokensActuales):
+    if pTokensActuales==[]: 
+          return []
+    resultado=[] #Lista donde se hará el "pretty print".
+    for token, traduccion in pTokensActuales: #Recorre los pares de la lista de los tokens actuales.
+        resultado.append(f"{token} --> {traduccion}") #Convierte cada tupla en un string más lindo y que sea más fácil de leer.
+    return resultado 
+
      
