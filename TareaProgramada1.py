@@ -1,36 +1,37 @@
-def cargarArchivos (pArchivo, pSeparador, pTokensActuales):    
-    try:
-            archivo=open(pArchivo, "r" )
-            reemplazados=[]  
-            for linea in archivo: #Recorre cada linea.
-                linea=linea.strip() 
-                partes=linea.split(pSeparador) #Separa con el separador que haya ingresado el usuario.
-                token = partes[0]
-                traduccion = partes[1]
-                encontrado = False 
-                for i in range(len(pTokensActuales)):
-                    if pTokensActuales[i][0] == token:
-                        if pTokensActuales[i][1] != traduccion: #Si la traducción del token es diferente al actual, se reemplaza.
-                            pTokensActuales[i] = (token, traduccion)
-                            reemplazados.append(token) 
-                        encontrado = True #Indica que el token ya existe en la lista de tokens (ya hubo reemplazo).
-                if encontrado == False:
-                    pTokensActuales.append((token, traduccion))              
-            archivo.close()
-            return pTokensActuales, reemplazados       
-    except FileNotFoundError: #En caso de que no exista el archivo.
-        return None
-    
-import csv 
-def generarCSV(conteo):
-    archivo=open("reporteRemplazo.csv", "escribir",newline="",encoding="utf-8")#El utf es para guardar simbolos como la "Ñ,ñ" y tildes
-    escribir=csv.writer(archivo)
-    escribir.writerow(["Palabra Original", "Token", "Cantidad"])
-    for palabra in conteo:
-        token=conteo [palabra]["Token"]
-        cantidad=conteo[palabra]["Cantidad"]
-        escribir.writerow([palabra,token,cantidad])
+def cargarArchivos (pArchivo, pSeparador, pTokensActuales):       
+    archivo=open(pArchivo, "r" )
+    reemplazados=[]  
+    for linea in archivo: #Recorre cada linea.
+        linea=linea.strip()
+        partes=linea.split(pSeparador) #Separa con el separador que haya ingresado el usuario.
+        token=partes[0]
+        traduccion=partes[1]
+        encontrado=False 
+        for i in range(len(pTokensActuales)): #Recorre la lista de tokens usando índices.
+            if pTokensActuales[i][0]==token: #Compara el token actual con el que está en el archivo.
+                if pTokensActuales[i][1]!=traduccion: #Si la traducción del token es diferente al actual, se reemplaza.
+                    pTokensActuales[i]=(token,traduccion)
+                    reemplazados.append(token)
+                encontrado=True #Indica que el token ya existe en la lista de tokens (ya hubo reemplazo).
+        if not encontrado:
+            pTokensActuales.append([token,traduccion])
     archivo.close()
-    tokens=[("def","[funcion]"), ("return", "[return]"), ("suma", "[variable]")]
+    return pTokensActuales,reemplazados
+
+def validarLinea(linea, separador):
+    linea=linea.strip()    
+    if linea=="":
+        return True,None  #Si la linea está vacía se ignora    
+    if separador not in linea: 
+        return False,"El separador ingresado no se encuentra en el archivo."    
+    partes=linea.split(separador, 1) #Divide solo una vez.   
+    if len(partes)<2:
+        return False, "Debe haber al menos un token y su valor."   
+    token=partes[0].strip()
+    valor=partes[1].strip()    
+    if token=="" or valor=="":
+        return False,"Los campos de las lineas se encuentran vacíos."    
+    return True, None
+
 
      
