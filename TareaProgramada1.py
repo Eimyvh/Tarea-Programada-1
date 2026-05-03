@@ -33,5 +33,23 @@ def validarLinea(linea, separador):
         return False,"Los campos de las lineas se encuentran vacíos."    
     return True, None
 
+def validarArchivo(pArchivo, pSeparador):
+    try:
+        archivo=open(pArchivo, "r")
+        hayDatos=False #Verifica que el archivo tenga al menos una linea válida.       
+        for linea in archivo:
+            valido,mensaje=validarLinea(linea,pSeparador) #Valida la linea.                   
+            if linea.strip()!="":
+                hayDatos=True                   
+            if not valido:
+                archivo.close()
+                return False,mensaje              
+        if not hayDatos:
+            archivo.close() 
+            return False,"El archivo está vacío, no contiene ningun token."                
+        archivo.close() 
+        return True,None #Todo salió bien, None= Ningun mensaje que dar al usuario
+    except FileNotFoundError: #Si el archivo no existe.
+        return False,"El archivo no existe."
 
      
