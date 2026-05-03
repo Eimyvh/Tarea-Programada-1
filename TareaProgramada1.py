@@ -60,4 +60,27 @@ def mostrarTokens (pTokensActuales):
         resultado.append(f"{token} --> {traduccion}") #Convierte cada tupla en un string más lindo y que sea más fácil de leer.
     return resultado 
 
+def agregarOModificar(pCadena, pSeparadorTokens, pSepararCadena, pTokensActuales):
+    partes=pCadena.split(pSeparadorTokens) #Separa la cadena por el separador que ingresó el usuario.
+    agregados=[]
+    modificados=[]
+    for parte in partes:
+        valido,mensaje=validarLinea(parte, pSepararCadena)        
+        if not valido:
+            print(mensaje)
+            continue
+        token,valor=parte.split(pSepararCadena, 1) #El 1 es para que solo se divida una vez.
+        token=token.strip()
+        valor=valor.strip()
+        encontrado=False
+        for i in range(len(pTokensActuales)):
+            if pTokensActuales[i][0]==token:
+                pTokensActuales[i]=(token, valor) #Se cambia el token viejo por el nuevo
+                modificados.append(token)
+                encontrado=True
+                break
+        if not encontrado:
+            pTokensActuales.append((token, valor)) #si no se encuentra aún, agrega.
+            agregados.append(token)
+    return pTokensActuales, agregados, modificados
      

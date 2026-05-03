@@ -36,3 +36,9 @@ while True:
                         for token in reemplazados:
                             print("Se reescribió el token de:", token)                   
                     print("El archivo de tokens fue ingresado con éxito.")
+    elif opcion=="2":
+                resultado=mostrarTokens (pTokensActuales)
+                if resultado==[]:
+                    print("No hay tokens almacenados actualmente, debe ingresar algún archivo o una lista de tokens primero.")
+                else:
+                    print("\n".join(resultado))
