@@ -70,3 +70,8 @@ while True:
                         print(f"Se agregó el token: '{token}'")
                     for token in modificados:
                         print(f"Se modificó el token:'{token}'") 
+    elif opcion=="4":
+            pArchivoN=input("Indique el archivo con la extensión en el que desea guardar las configuraciones actuales de los tokens (Ejemplo: archivo.txt): ")
+            pSeparadorInterno=input("Ingrese el separador que desea utilizar para dividir los tokens (Ejemplo: ->  ): ")
+            guardarTokensEnArchivo(pArchivoN,pSeparadorInterno,pTokensActuales)
+            print("Los archivos fueron guardados exitosamente en el archivo llamado: ",pArchivoN)
