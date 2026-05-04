@@ -84,5 +84,15 @@ def agregarOModificar(pCadena, pSeparadorTokens, pSepararCadena, pTokensActuales
             agregados.append(token)
     return pTokensActuales, agregados, modificados
 
-
+def guardarTokensEnArchivo (pArchivoN,pSeparadorInterno,pTokensActuales):
+        archivoN=open(pArchivoN, "w") #Aquí se crea el archivo
+        for i in range(len(pTokensActuales)):
+            token=pTokensActuales[i][0]
+            valor=pTokensActuales[i][1]
+            linea=token+pSeparadorInterno+valor #se agrega la cadena con el separador que el usuario ingresó.
+            if i<len(pTokensActuales) -1: #En todos menos el último
+                archivoN.write(linea+"\n") #se juntan todas las cadenas con un salto de linea.
+            else:
+                archivoN.write(linea)        
+        archivoN.close()
      
