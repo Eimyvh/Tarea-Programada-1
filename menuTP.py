@@ -75,3 +75,8 @@ while True:
             pSeparadorInterno=input("Ingrese el separador que desea utilizar para dividir los tokens (Ejemplo: ->  ): ")
             guardarTokensEnArchivo(pArchivoN,pSeparadorInterno,pTokensActuales)
             print("Los archivos fueron guardados exitosamente en el archivo llamado: ",pArchivoN)
+    elif opcion=="5":
+          pArchivoATraducir=input("Ingrese el nombre archvio que desea traducir (Ejemplo: archivo.py): ")
+          pArchivoNuevo=input("Ingrese el nombre que desea que tenga el archivo que ya ha sido traducido, favor colocarlo con extrensión (Ejemplo: traducido.py): ")
+          traducirArchivo (pArchivoATraducir, pArchivoNuevo, pTokensActuales)
+          print("El archivo se tradujo correctamente y fue agregado a un nuevo archivo llamado:", pArchivoNuevo)
