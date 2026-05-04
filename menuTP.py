@@ -70,3 +70,13 @@ while True:
                         print(f"Se agregó el token: '{token}'")
                     for token in modificados:
                         print(f"Se modificó el token:'{token}'") 
+    elif opcion=="4":
+            pArchivoN=input("Indique el archivo con la extensión en el que desea guardar las configuraciones actuales de los tokens (Ejemplo: archivo.txt): ")
+            pSeparadorInterno=input("Ingrese el separador que desea utilizar para dividir los tokens (Ejemplo: ->  ): ")
+            guardarTokensEnArchivo(pArchivoN,pSeparadorInterno,pTokensActuales)
+            print("Los archivos fueron guardados exitosamente en el archivo llamado: ",pArchivoN)
+    elif opcion=="5":
+          pArchivoATraducir=input("Ingrese el nombre archvio que desea traducir (Ejemplo: archivo.py): ")
+          pArchivoNuevo=input("Ingrese el nombre que desea que tenga el archivo que ya ha sido traducido, favor colocarlo con extrensión (Ejemplo: traducido.py): ")
+          traducirArchivo (pArchivoATraducir, pArchivoNuevo, pTokensActuales)
+          print("El archivo se tradujo correctamente y fue agregado a un nuevo archivo llamado:", pArchivoNuevo)
