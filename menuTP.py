@@ -42,3 +42,31 @@ while True:
                     print("No hay tokens almacenados actualmente, debe ingresar algún archivo o una lista de tokens primero.")
                 else:
                     print("\n".join(resultado))
+    elif opcion=="3":
+            pCadena=input("Ingrese la lista de tokens (si desea cancelar la operación, digite 1): ")
+            if pCadena=="1":
+                   print("Se canceló la operación.")
+                   continue
+            elif pCadena=="":
+                  print ("No se puede seguir con la operación, debe ingresar una lista de tokens.")
+                  continue
+            else:
+                pSeparadorTokens=input("Indique el separador que divide cada elemento de la lista (si solo es un token y no una lista ingrese un punto (.)): ")
+                if pSeparadorTokens=="":
+                    print("Debe ingresar algún separador.")
+                    continue
+                pSepararCadena=input("Indique el separador que aparte los tokens con su respectivo valor: ")
+                if pSepararCadena=="":
+                    print("Debe ingresar un separador válido.")
+                    continue
+                if pSeparadorTokens==pSepararCadena:
+                    print("Los separadores no pueden ser iguales.")
+                    continue
+                pTokensActuales,agregados,modificados=agregarOModificar(pCadena, pSeparadorTokens, pSepararCadena, pTokensActuales)
+                if len(agregados)==0 and len(modificados)==0:
+                    print("No se pudieron procesar tokens válidos.")
+                else:
+                    for token in agregados:
+                        print(f"Se agregó el token: '{token}'")
+                    for token in modificados:
+                        print(f"Se modificó el token:'{token}'") 
