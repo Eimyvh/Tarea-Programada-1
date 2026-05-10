@@ -95,4 +95,37 @@ def guardarTokensEnArchivo (pArchivoN,pSeparadorInterno,pTokensActuales):
             else:
                 archivoN.write(linea)        
         archivoN.close()
-     
+
+def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales):
+    import re
+    try:
+        archivoATraducir=open(pArchivoATraducir, "r")
+        archivoNuevo=open(pArchivoNuevo, "w")
+        patron=r'"[^"]*"|\'[^\']*\'|[a-zA-Z_]\w*|\s+|[^\w\s]' #ER que separa la línea en strings, tokens, espacios, simbolos.
+        for linea in archivoATraducir:
+            partes=re.findall(patron, linea) 
+            lineaNueva=""
+            for parte in partes:
+                reemplazada=parte
+                if not parte.isspace(): #Evita los espacios.
+                    for token in pTokensActuales:
+                        if parte==token[0]:
+                            reemplazada=token[1]
+                lineaNueva+=reemplazada
+            archivoNuevo.write(lineaNueva)
+        archivoATraducir.close()
+        archivoNuevo.close()
+    except FileNotFoundError:
+        return "El archivo no existe."
+    
+import csv 
+def generarCSV(conteo):
+    archivo=open("reporteRemplazo.csv", "escribir",newline="",encoding="utf-8")#El utf es para guardar simbolos como la "Ñ,ñ" y tildes
+    escribir=csv.writer(archivo)#Esta varible lo que hace es poder escribir filas en el archivo CSV
+    escribir.writerow(["Palabra Original", "Token", "Cantidad"])#Escribe la primera fila del archivo
+    for palabra in conteo: #Lo que hace este for es pasar por cada palabra
+        token=conteo [palabra]["Token"]#Obtiene el token que este asociado a la palabra 
+        cantidad=conteo[palabra]["Cantidad"]#obtiene la cantidad de veces que la palabra digitada fue remplazada
+        escribir.writerow([palabra,token,cantidad])#writerow lo que hace es escribir una fila en el CSV con los datos 
+    archivo.close()#Este close lo que hace es cerrar el archivo para poder guardarlo bien
+    tokens=[("def","[funcion]"), ("return", "[return]"), ("suma", "[variable]")]
