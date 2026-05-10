@@ -193,6 +193,40 @@ def guardarTokensEnArchivo (pArchivoN,pSeparadorInterno,pTokensActuales,bitacora
             else:
                 archivoN.write(linea)        
         archivoN.close()
+        registrarAccion(bitacora,f"Se guardaron {len(pTokensActuales)} tokens en el archivo '{pArchivoN}'.","bitacora.txt")
+    
+def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales, bitacora):
+    """
+    Funcionamiento: Traduce el contenido de un archivo utilizando los tokens almacenados y guarda el resultado en un nuevo archivo.
+    Entradas: 
+    pArchivoATraducir -Explicación: Es el archivo que tiene el código o texto que se desea traducir.
+    pArchivoNuevo -Explicación: Es el nombre del archivo donde se guardará el contenido ya traducido.
+    pTokensActuales -Explicación: Es la lista que contiene los tokens y sus traducciones.
+    bitacora -Explicación: Es la lista  donde se registran las acciones realizadas durante la traducción.
+    Salidas: 
+    Ninguna salida -Explicación: La función realiza la traducción y guarda el resultado en un archivo, pero no retorna nada.
+    """
+    import re
+    archivoATraducir=open(pArchivoATraducir, "r")
+    archivoNuevo=open(pArchivoNuevo, "w")
+    patron=r'"[^"]*"|\'[^\']*\'|[a-zA-Z_]\w*|\s+|[^\w\s]' #ER que separa la línea en strings, tokens, espacios, simbolos.
+    reemplazados=0
+    for linea in archivoATraducir:
+        partes=re.findall(patron, linea) 
+        lineaNueva=""
+        for parte in partes:
+            reemplazada=parte
+            if not parte.isspace(): #Evita los espacios.
+                for token in pTokensActuales:
+                    if parte==token[0]:
+                        reemplazada=token[1]
+                        reemplazados+=1
+                        registrarAccion(bitacora, f"Se hizo el reemplazo de : {token[0]} → {token[1]}", "bitacora.txt")
+            lineaNueva+=reemplazada
+        archivoNuevo.write(lineaNueva)
+    archivoATraducir.close()
+    archivoNuevo.close()
+    registrarAccion(bitacora,f"Traducción completada con {reemplazados} reemplazos realizados.","bitacora.txt")
 
 import pickle
 from datetime import datetime
@@ -284,64 +318,6 @@ def mostrarRegistros(listaRegistros):
     else:
         for registro in listaRegistros:
             print(registro[0], "-", registro[1])
-<<<<<<< HEAD
-registrarAccion(bitacora,f"Se guardaron {len(pTokensActuales)} tokens en el archivo '{pArchivoN}'.","bitacora.txt")
-    
-def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales, bitacora):
-    """
-    Funcionamiento: Traduce el contenido de un archivo utilizando los tokens almacenados y guarda el resultado en un nuevo archivo.
-    Entradas: 
-    pArchivoATraducir -Explicación: Es el archivo que tiene el código o texto que se desea traducir.
-    pArchivoNuevo -Explicación: Es el nombre del archivo donde se guardará el contenido ya traducido.
-    pTokensActuales -Explicación: Es la lista que contiene los tokens y sus traducciones.
-    bitacora -Explicación: Es la lista  donde se registran las acciones realizadas durante la traducción.
-    Salidas: 
-    Ninguna salida -Explicación: La función realiza la traducción y guarda el resultado en un archivo, pero no retorna nada.
-    """
-    import re
-    archivoATraducir=open(pArchivoATraducir, "r")
-    archivoNuevo=open(pArchivoNuevo, "w")
-    patron=r'"[^"]*"|\'[^\']*\'|[a-zA-Z_]\w*|\s+|[^\w\s]' #ER que separa la línea en strings, tokens, espacios, simbolos.
-    reemplazados=0
-    for linea in archivoATraducir:
-        partes=re.findall(patron, linea) 
-        lineaNueva=""
-        for parte in partes:
-            reemplazada=parte
-            if not parte.isspace(): #Evita los espacios.
-                for token in pTokensActuales:
-                    if parte==token[0]:
-                        reemplazada=token[1]
-                        reemplazados+=1
-                        registrarAccion(bitacora, f"Se hizo el reemplazo de : {token[0]} → {token[1]}", "bitacora.txt")
-            lineaNueva+=reemplazada
-        archivoNuevo.write(lineaNueva)
-    archivoATraducir.close()
-    archivoNuevo.close()
-    registrarAccion(bitacora,f"Traducción completada con {reemplazados} reemplazos realizados.","bitacora.txt")
-
-def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales):
-    import re
-    try:
-        archivoATraducir=open(pArchivoATraducir, "r")
-        archivoNuevo=open(pArchivoNuevo, "w")
-        patron=r'"[^"]*"|\'[^\']*\'|[a-zA-Z_]\w*|\s+|[^\w\s]' #ER que separa la línea en strings, tokens, espacios, simbolos.
-        for linea in archivoATraducir:
-            partes=re.findall(patron, linea) 
-            lineaNueva=""
-            for parte in partes:
-                reemplazada=parte
-                if not parte.isspace(): #Evita los espacios.
-                    for token in pTokensActuales:
-                        if parte==token[0]:
-                            reemplazada=token[1]
-                lineaNueva+=reemplazada
-            archivoNuevo.write(lineaNueva)
-        archivoATraducir.close()
-        archivoNuevo.close()
-    except FileNotFoundError:
-        return "El archivo no existe."
-    
 import csv 
 def generarCSV(conteo):
     archivo=open("reporteRemplazo.csv", "escribir",newline="",encoding="utf-8")#El utf es para guardar simbolos como la "Ñ,ñ" y tildes
