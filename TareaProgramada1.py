@@ -193,7 +193,99 @@ def guardarTokensEnArchivo (pArchivoN,pSeparadorInterno,pTokensActuales,bitacora
             else:
                 archivoN.write(linea)        
         archivoN.close()
-        registrarAccion(bitacora,f"Se guardaron {len(pTokensActuales)} tokens en el archivo '{pArchivoN}'.","bitacora.txt")
+
+import pickle
+from datetime import datetime
+def cargarBitacora(nombreArchivo):
+    """
+    Funcionamiento: Carga la bitácora almacenada en un archivo binario utilizando pickle.
+    Entradas: 
+    nombreArchivo -Explicación: Es el nombre del archivo donde está guardada la bitácora.
+    Salidas: 
+    bitacora (Tipo: Lista) -Explicación: Almacena los datos cargados desde el archivo de bitácora.
+    [] (Tipo: Lista) -Explicación: Se retorna una lista vacía cuando pasa algún inconveniente al abrir o cargar el archivo.
+    """
+    try:
+        archivo=open(nombreArchivo, "rb")
+        bitacora=pickle.load(archivo)
+        archivo.close()
+        return bitacora
+    except:
+        return []
+    
+def guardarBitacora(nombreArchivo, bitacora):
+    """
+    Funcionamiento: Guarda la bitácora en un archivo binario utilizando pickle.
+    Entradas: 
+    nombreArchivo -Explicación: Es el nombre del archivo en donde se almacenará la bitácora.
+    bitacora -Explicación: Es la lista o que almacena las acciones registradas en la bitácora.
+    Salidas: 
+    Ninguna salida -Explicación: La función únicamente guarda la información en el archivo y no retorna nada.
+    """
+    archivo=open(nombreArchivo, "wb")
+    pickle.dump(bitacora, archivo)
+    archivo.close()
+
+def registrarAccion(bitacora, descripcion, nombreArchivo):
+    """
+    Funcionamiento: Registra una acción en la bitácora junto con la fecha y hora en que fue realizada.
+    Entradas: 
+    bitacora -Explicación: Es la lista donde se almacenan los registros de las acciones realizadas.
+    descripcion -Explicación: Es el texto que describe la acción que se desea registrar.
+    nombreArchivo -Explicación: Es el nombre del archivo donde se guardará la bitácora actualizada.
+    Salidas: 
+    Ninguna salida -Explicación: La función agrega un registro a la bitácora y guarda la información en el archivo, pero no retorna nada.
+    """
+    fecha=datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+    registro=(fecha, descripcion)    
+    bitacora.append(registro)    
+    guardarBitacora(nombreArchivo, bitacora)
+
+def buscarPorFecha(bitacora, fechaBuscada):
+    """
+    Funcionamiento: Busca en la bitácora los registros que coincidan con una fecha específica.
+    Entradas: 
+    bitacora -Explicación: Es la lista que tiene los registros almacenados en la bitácora.
+    fechaBuscada -Explicación: Es la fecha que se desea buscar dentro de los registros de la bitácora.
+    Salidas: 
+    encontrados (Tipo: Lista) -Explicación: Contiene los registros de la bitácora en la cual la fecha coincide con la fecha buscada.
+    """
+    encontrados=[]    
+    for registro in bitacora:
+        if registro[0].startswith(fechaBuscada):
+            encontrados.append(registro)    
+    return encontrados
+
+def buscarPorPalabra(bitacora, palabra):
+    """
+    Funcionamiento: Busca en la bitácora los registros que contengan una palabra específica.
+    Entradas: 
+    bitacora -Explicación: Es la lista que contiene los registros almacenados en la bitácora.
+    palabra -Explicación: Es la palabra que se desea buscar dentro de las descripciones de los registros.
+    Salidas: 
+    encontrados (Tipo: Lista) -Explicación: Contiene los registros de la bitácora en la cual la descripción incluye la palabra buscada.
+    """
+    encontrados=[]   
+    for registro in bitacora:
+        if palabra.lower() in registro[1].lower():
+            encontrados.append(registro)   
+    return encontrados
+
+def mostrarRegistros(listaRegistros):
+    """
+    Funcionamiento: Muestra en pantalla los registros almacenados en una lista de registros.
+    Entradas: 
+    listaRegistros -Explicación: Es la lista que contiene los registros que se desean mostrar.
+    Salidas: 
+    Ninguna salida -Explicación: La función solo imprime los registros en pantalla y no retorna nada.
+    """
+    if len(listaRegistros)==0:
+        print("No se encontraron registros.")
+    else:
+        for registro in listaRegistros:
+            print(registro[0], "-", registro[1])
+<<<<<<< HEAD
+registrarAccion(bitacora,f"Se guardaron {len(pTokensActuales)} tokens en el archivo '{pArchivoN}'.","bitacora.txt")
     
 def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales, bitacora):
     """
@@ -227,3 +319,37 @@ def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales, bitacora)
     archivoATraducir.close()
     archivoNuevo.close()
     registrarAccion(bitacora,f"Traducción completada con {reemplazados} reemplazos realizados.","bitacora.txt")
+
+def traducirArchivo(pArchivoATraducir, pArchivoNuevo, pTokensActuales):
+    import re
+    try:
+        archivoATraducir=open(pArchivoATraducir, "r")
+        archivoNuevo=open(pArchivoNuevo, "w")
+        patron=r'"[^"]*"|\'[^\']*\'|[a-zA-Z_]\w*|\s+|[^\w\s]' #ER que separa la línea en strings, tokens, espacios, simbolos.
+        for linea in archivoATraducir:
+            partes=re.findall(patron, linea) 
+            lineaNueva=""
+            for parte in partes:
+                reemplazada=parte
+                if not parte.isspace(): #Evita los espacios.
+                    for token in pTokensActuales:
+                        if parte==token[0]:
+                            reemplazada=token[1]
+                lineaNueva+=reemplazada
+            archivoNuevo.write(lineaNueva)
+        archivoATraducir.close()
+        archivoNuevo.close()
+    except FileNotFoundError:
+        return "El archivo no existe."
+    
+import csv 
+def generarCSV(conteo):
+    archivo=open("reporteRemplazo.csv", "escribir",newline="",encoding="utf-8")#El utf es para guardar simbolos como la "Ñ,ñ" y tildes
+    escribir=csv.writer(archivo)#Esta varible lo que hace es poder escribir filas en el archivo CSV
+    escribir.writerow(["Palabra Original", "Token", "Cantidad"])#Escribe la primera fila del archivo
+    for palabra in conteo: #Lo que hace este for es pasar por cada palabra
+        token=conteo [palabra]["Token"]#Obtiene el token que este asociado a la palabra 
+        cantidad=conteo[palabra]["Cantidad"]#obtiene la cantidad de veces que la palabra digitada fue remplazada
+        escribir.writerow([palabra,token,cantidad])#writerow lo que hace es escribir una fila en el CSV con los datos 
+    archivo.close()#Este close lo que hace es cerrar el archivo para poder guardarlo bien
+    tokens=[("def","[funcion]"), ("return", "[return]"), ("suma", "[variable]")]
