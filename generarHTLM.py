@@ -1,6 +1,7 @@
+
 import datetime
 
-def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,rutaArchivo):
+def generarReporteHTML(titulo,conteo, duracion, totalReemplazos, porcentaje):
     """
     Funcionamiento: Esta función lo que nos permite hacer es la generacion de un archivo HTML con un reporte de traducción.
     Entrada
@@ -16,38 +17,25 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,ruta
     fechaHora = datetime.datetime.now() # el datetime es para obtener la fecha y hora actual
     fechaMostrar = fechaHora.strftime("%d/%m/%Y %H:%M:%S")#Es la fecha que se va a mostrar dentro del HTML
     nombreArchivo = fechaHora.strftime("reporteHTML_%d-%m-%y-%H-%M-%S.html") #Aqui usamos guiones porque "/" y ":" no funcionan e investigando vimos que es por que windows lo puede identificar de otra manera 
-    archivo=open(rutaArchivo,"r",encoding="utf-8")
-    texto=archivo.read()#lee el contenido del archivo
-    palabras=texto.split()#separa las palabras 
-    totalPalabras=len(palabras)#Cuenta el total de palabras
-    archivo.close()
-    totalReemplazos=0
-    for palabra in conteo:
-        totalReemplazos+=conteo[palabra]["Cantidad"]
-    porcentaje=(totalReemplazos/totalPalabras)*100
-    duracion=2.5
-    archivoHTML = open(nombreArchivo, "w", encoding="utf-8")#Abrir archivo HTML en modo escritura
+    # Abrir archivo HTML en modo escritura
+    archivoHTML = open(nombreArchivo, "w", encoding="utf-8")
     # Este f""" sirve para escribir muchas líneas seguidas  y meter variables dentro del texto
     archivoHTML.write(f"""
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="UTF-8">
-
     <!-- Título de la pestaña -->
     <title>{titulo}</title>
-
     <style>
-
-        body{{
-            front-family:Times New Roman
-            margin:30px;
+        body {{
+            font-family: Arial;
+            margin: 30px;
             background-color: white;
             color: black;
         }}
-        h1{{
-            text-align center;
+        h1 {{
+            text-align: center;
             color: black;
         }}
         h2 {{
@@ -67,7 +55,6 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,ruta
         table, th, td {{
             border: 1px solid black;
         }}
-
         /* Encabezados */
         th {{
             background-color: black;
@@ -93,9 +80,8 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,ruta
     <h2>Fecha y hora de generación: {fechaMostrar}</h2>
     <p>Duración total del procesamiento: {duracion} segundos</p>
     <p>Cantidad total de reemplazos: {totalReemplazos}</p>
-    <p>Porcentaje de palabras reemplazadas: {porcentaje:.2f}%</p>
-     <table>
-
+    <p>Porcentaje de palabras reemplazadas: {porcentaje}%</p>
+    <table>
         <tr>
             <th>Palabra Original</th>
             <th>Token</th>
@@ -103,8 +89,8 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,ruta
         </tr>
 """)
     for palabra in conteo:
-        token=conteo[palabra]["token"]
-        cantidad=conteo[palabra]["cantidad"]
+        token = conteo[palabra]["token"]
+        cantidad = conteo[palabra]["cantidad"]
         archivoHTML.write(f"""
         <tr>
             <td>{palabra}</td>
@@ -114,21 +100,21 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo,ruta
 """)
     archivoHTML.write("""
     </table>
-                      
+
 </body>
 </html>
 """)
     archivoHTML.close()#aqui se cierra ya el archivo
-    print("Reporte HTLM generado correctamente")
-    print("Nombre del archivo", nombreArchivo)
-conteo={
+conteo = {
     "def": {"token": "[FUNCION]", "cantidad": 2},
     "return": {"token": "[RETORNAR]", "cantidad": 1},
     "print": {"token": "[IMPRIMIR]", "cantidad": 3}
 }
-rutaArchivo=input("Ingrese el nombre del archivo: ")
+# Genera el HTML
 generarReporteHTML(
-    "Reporte",
+    "Reporte TP1",
     conteo,
-    rutaArchivo
+    2.5,
+    6,
+    75
 )
