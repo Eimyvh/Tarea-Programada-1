@@ -1,6 +1,6 @@
 import datetime
 
-def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje, listaTokens):
+def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje,conteo):
     """
     Funcionamiento: Esta función lo que nos permite hacer es la generacion de un archivo HTML con un reporte de traducción.
     Entrada
@@ -53,3 +53,52 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje, listaToken
             border-collapse: collapse;
             margin-top: 20px;
         }}
+        /* Bordes */
+        table, th, td {{
+            border: 1px solid black;
+        }}
+
+        /* Encabezados */
+        th {{
+            background-color: black;
+            color: white;
+            padding: 10px;
+        }}
+        /* Celdas */
+        td {{
+            padding: 10px;
+            text-align: center;
+        }}
+        /* Filas alternas */
+        tr:nth-child(even) {{
+            background-color: #e6e6e6;
+        }}
+        tr:nth-child(odd) {{
+            background-color: white;
+        }}
+    </style>
+</head>
+<body>
+    <h1>Reporte de Traducción</h1>
+    <h2>Fecha y hora de generación: {fechaMostrar}</h2>
+    <p>Duración total del procesamiento: {duracion} segundos</p>
+    <p>Cantidad total de reemplazos: {totalReemplazos}</p>
+    <p>Porcentaje de palabras reemplazadas: {porcentaje}%</p>
+     <table>
+
+        <tr>
+            <th>Palabra Original</th>
+            <th>Token</th>
+            <th>Cantidad</th>
+        </tr>
+""")
+    for palabra in conteo:
+        token=conteo[palabra]["token"]
+        cantidad=conteo[palabra]["cantidad"]
+        archivoHTML.write(f"""
+        <tr>
+            <td>{palabra}</td>
+            <td>{token}</td>
+            <td>{cantidad}</td>
+        </tr>
+""")
