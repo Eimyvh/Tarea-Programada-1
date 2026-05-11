@@ -1,34 +1,39 @@
 import datetime
-def generarHTML(titulo):
-    # Obtiene la fecha y hora actual
-    fechaHora = datetime.datetime.now()
-    # Formato para mostrar fecha y hora dentro del HTML
-    fechaMostrar = fechaHora.strftime("%d/%m/%Y %H:%M:%S")
-    # Formato para nombre del archivo
-    nombreArchivo = fechaHora.strftime("reporteHTML-%d-%m-%y-%H-%M-%S.html")
-    # Crea el archivo HTML
+
+def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje, listaTokens):
+    """
+    Funcionamiento: Esta función lo que nos permite hacer es la generacion de un archivo HTML con un reporte de traducción.
+    Entrada
+    - titulo (str): título que aparecerá en la pestaña del navegador
+    - duracion (float): duración total del procesamiento
+    - totalReemplazos (int): cantidad total de reemplazos realizados
+    - porcentaje (float): porcentaje de palabras reemplazadas
+    - listaTokens (list): lista de tuplas con:
+        (palabraOriginal (str), reemplazo (str), cantidad (int))
+    Salidas:
+    - Genera un archivo HTML
+    """
+    fechaHora = datetime.datetime.now() # el datetime es para obtener la fecha y hora actual
+    fechaMostrar = fechaHora.strftime("%d/%m/%Y %H:%M:%S")#Es la fecha que se va a mostrar dentro del HTML
+    nombreArchivo = fechaHora.strftime("reporteHTML_%d-%m-%y-%H-%M-%S.html") #Aqui usamos guiones porque "/" y ":" no funcionan e investigando vimos que es por que windows lo puede identificar de otra manera 
+    # Abrir archivo HTML en modo escritura
     archivoHTML = open(nombreArchivo, "w", encoding="utf-8")
+    # Este f""" sirve para escribir muchas líneas seguidas  y meter variables dentro del texto
     archivoHTML.write(f"""
 <!DOCTYPE html>
 <html>
-
 <head>
 
+    <meta charset="UTF-8">
+
+    <!-- Título de la pestaña -->
     <title>{titulo}</title>
 
-</head>
+    <style>
 
-<body>
-
-    <h1>Reporte de Traducción</h1>
-
-    <h2>Fecha y hora de generación: {fechaMostrar}</h2>
-
-</body>
-
-</html>
-""")
-  
-    archivoHTML.close()
-    
-generarHTML("Reporte TP1")
+        body{{
+            front-family:Times New Roman
+            margin:30px;
+            background-color: white;
+            color: black;
+        }}
