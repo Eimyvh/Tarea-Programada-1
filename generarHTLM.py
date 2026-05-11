@@ -16,8 +16,7 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje, listaToken
     fechaHora = datetime.datetime.now() # el datetime es para obtener la fecha y hora actual
     fechaMostrar = fechaHora.strftime("%d/%m/%Y %H:%M:%S")#Es la fecha que se va a mostrar dentro del HTML
     nombreArchivo = fechaHora.strftime("reporteHTML_%d-%m-%y-%H-%M-%S.html") #Aqui usamos guiones porque "/" y ":" no funcionan e investigando vimos que es por que windows lo puede identificar de otra manera 
-    # Abrir archivo HTML en modo escritura
-    archivoHTML = open(nombreArchivo, "w", encoding="utf-8")
+    archivoHTML = open(nombreArchivo, "w", encoding="utf-8")#Abrir archivo HTML en modo escritura
     # Este f""" sirve para escribir muchas líneas seguidas  y meter variables dentro del texto
     archivoHTML.write(f"""
 <!DOCTYPE html>
@@ -36,4 +35,21 @@ def generarReporteHTML(titulo, duracion, totalReemplazos, porcentaje, listaToken
             margin:30px;
             background-color: white;
             color: black;
+        }}
+        h1{{
+            text-align center;
+            color: black;
+        }}
+        h2 {{
+            text-align: center;
+            color: red;
+        }}
+        p {{
+            font-size: 18px;
+        }}
+        /* Tabla */
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }}
