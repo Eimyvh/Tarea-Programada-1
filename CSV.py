@@ -8,4 +8,4 @@ def generarCSV(conteo):
         cantidad=conteo[palabra]["Cantidad"]#obtiene la cantidad de veces que la palabra digitada fue remplazada
         escribir.writerow([palabra,token,cantidad])#writerow lo que hace es escribir una fila en el CSV con los datos 
     archivo.close()#Este close lo que hace es cerrar el archivo para poder guardarlo bien
-    tokens=[("def","[funcion]"), ("return", "[return]"), ("suma", "[variable]")]
+    tokens=[("def","[funcion]"), ("return", "[returnar]"), ("print", "[imprimir]")]

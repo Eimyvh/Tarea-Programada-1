@@ -17,12 +17,12 @@ def generarCSV(conteo):
         writer.writerow([palabra, token, cantidad]) #escribe una fila dentro del csv
     archivo.close() #Este close lo que hace es cerrar el archivo para poder guardarlo bien
 tokens = [              #es la listab de los tokens
-    ("def", "[FUNC]"),
-    ("return", "[RET]"),
-    ("suma", "[VAR]")]
+    ("def", "[FUNCION]"),
+    ("return", "[RETORNAR]"),
+    ("print", "[PRINT]")]
 conteo = {              #es el diccionario para el conteo
-    "def":{"token":"[FUNC]", "cantidad":2},
-    "return":{"token": "[RET]", "cantidad":1},
-    "suma":{"token": "[VAR]", "cantidad":3}
+    "def":{"token":"[FUNCION]", "cantidad":2},
+    "return":{"token": "[RETORNAR]", "cantidad":1},
+    "print":{"token": "[IMPRIMIR]", "cantidad":3}
 }
 generarCSV(conteo)

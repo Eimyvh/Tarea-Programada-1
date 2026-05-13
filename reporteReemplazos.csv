@@ -1,0 +1,4 @@
+Palabra Original,Token,Cantidad
+def,[FUNCION],2
+return,[RETORNAR],1
+print,[IMPRIMIR],3
